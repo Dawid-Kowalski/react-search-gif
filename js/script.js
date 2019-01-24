@@ -18,30 +18,26 @@ class SearchForm extends React.Component {
 	}
 
 	changeSearchText = event => {
-		this.setState({searchText: event.target.value})
 
-		if(searchText.length > 2) {
-			this.props.onSearch(searchText);
+		let text =  event.target.value;
+		this.setState({searchText: text})
+
+		if(this.state.searchText.length > 2) {
+			this.props.onSearch(this.state.searchText);
 		}
 	}
 
 	handleKeyUp = event => {
+
     	if (event.keyCode === 13) {
       		this.props.onSearch(this.state.searchText);
     	}
   	}
 
-	test = event => {
-		alert(this.state.searchText)
-	}
-
-
 	render() {
-
 		return (
 			<div>
 				<input type='text' value = {this.state.searchText} onChange={this.changeSearchText} onKeyUp={this.handleKeyUp} placeholder='wpisz nazwę'/>
-				<button onClick={this.test}>sprawdź</button> 
 			</div>
 		)
 	}
@@ -53,9 +49,7 @@ class Gif extends React.Component {
 		return this.props.sourceUrl || GIPHY_LOAD;
 	}
 
-
 	render() {
-
 		const url = this.props.loading ?  GIPHY_LOAD : this.props.url;
 
 		return (
@@ -78,11 +72,12 @@ class App extends React.Component {
 
 	handleSearch = () => {
 		this.setState({loading: true});
-		this.getGif(searchText, function(gif) {
+
+		this.getGif(this.state.searchText, function(gif) {
 			this.setState({
 				loading: false,
 				gif: gif,
-				searchText: searchText
+				searchText: this.state.searchText
 			});
 		}.bind(this));
 	};
